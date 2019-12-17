@@ -9,6 +9,7 @@ docker run   \
     -it  \
     --rm  \
     --net=host \
+    --gpus=all \
     -v $NOTEBOOK_DIR:/notebooks/  \
     -v $PROJECT_DIR:/project/  \
     -v $DATA_DIR:/data/  \
