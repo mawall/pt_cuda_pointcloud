@@ -19,4 +19,4 @@ docker run   \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -w /notebooks \
     --name ptpc \
-    pt_pointcloud
+    pt_cuda_pointcloud

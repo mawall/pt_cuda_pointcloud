@@ -1,3 +1,3 @@
 #! /bin/bash
 
-sudo docker build . -t pt_pointcloud
+sudo docker build . -t pt_cuda_pointcloud
