@@ -1,12 +1,12 @@
 FROM mawall/py_pointcloud
 
-## CUDA Version
-ENV CUDA_MAJOR_VERSION=9.2
-ENV CUDA_MAJOR_VERSION_HYP=9.2
-ENV CUDA_MINOR_VERSION=9.2.148-1
-ENV NVIDIA_REQUIRE_CUDA="cuda>=9.2"
+# CUDA Version
+ENV CUDA_MAJOR_VERSION=10.1
+ENV CUDA_MAJOR_VERSION_HYP=10.1
+ENV CUDA_MINOR_VERSION=10.1.243-1
+ENV NVIDIA_REQUIRE_CUDA="cuda>=10.1"
 
-## CUDA Install
+# CUDA Install
 RUN wget -nv -P /root/manual http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub && \
     echo "47217c49dcb9e47a8728b354450f694c9898cd4a126173044a69b1e9ac0fba96  /root/manual/7fa2af80.pub" | sha256sum -c --strict - && \
     apt-key add /root/manual/7fa2af80.pub && \
