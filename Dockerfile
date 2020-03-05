@@ -7,6 +7,7 @@ ENV CUDA_MINOR_VERSION=10.1.243-1
 ENV NVIDIA_REQUIRE_CUDA="cuda>=10.1"
 
 # CUDA Install
+# From https://github.com/ecohealthalliance/reservoir/blob/master/Dockerfile.gpu
 RUN wget -nv -P /root/manual http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub && \
     echo "47217c49dcb9e47a8728b354450f694c9898cd4a126173044a69b1e9ac0fba96  /root/manual/7fa2af80.pub" | sha256sum -c --strict - && \
     apt-key add /root/manual/7fa2af80.pub && \
@@ -31,7 +32,8 @@ ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 
 # Packages
-RUN pip install --upgrade opencv-python
+RUN pip install --upgrade opencv-python \
+                          tensorboard
 RUN conda install -y pillow \
                      pytorch \
                      torchvision \
