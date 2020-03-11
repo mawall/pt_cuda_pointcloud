@@ -38,4 +38,7 @@ RUN conda install -y pillow \
                      pytorch \
                      torchvision \
                      cudatoolkit=10.1 \
-                  -c pytorch
+                     pyntcloud \
+                     pythreejs \
+                  -c pytorch \
+                     conda-forge
