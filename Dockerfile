@@ -41,4 +41,7 @@ RUN conda install -y pillow \
                      pyntcloud \
                      pythreejs \
                   -c pytorch \
-                     conda-forge
+                  -c conda-forge
+
+RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager
+RUN jupyter labextension install jupyter-threejs
