@@ -33,7 +33,8 @@ ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 
 # Packages
 RUN pip install --upgrade opencv-python \
-                          tensorboard
+                          tensorboard \
+                          pyflann-py3
 RUN conda install -y pillow \
                      pytorch \
                      torchvision \
