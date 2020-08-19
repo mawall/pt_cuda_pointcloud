@@ -13,6 +13,8 @@ docker run   \
     --net=host \
     --gpus=all \
     -e HOST_IP="$(ip -o route get 8.8.8.8 | sed -e 's/^.* src \([^ ]*\) .*$/\1/')" \
+    -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
     -v $NOTEBOOK_DIR:/notebooks/  \
     -v $PROJECT_DIR:/project/  \
     -v $DATA_DIR:/data/  \
