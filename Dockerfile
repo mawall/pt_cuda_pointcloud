@@ -6,23 +6,21 @@ ENV CUDA_MAJOR_VERSION_HYP=10.1
 ENV CUDA_MINOR_VERSION=10.1.243-1
 ENV NVIDIA_REQUIRE_CUDA="cuda>=10.1"
 
-# CUDA Install
-# From https://github.com/ecohealthalliance/reservoir/blob/master/Dockerfile.gpu
-RUN wget -nv -P /root/manual http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub && \
-    echo "47217c49dcb9e47a8728b354450f694c9898cd4a126173044a69b1e9ac0fba96  /root/manual/7fa2af80.pub" | sha256sum -c --strict - && \
-    apt-key add /root/manual/7fa2af80.pub && \
-    wget -nv -P /root/manual http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_${CUDA_MINOR_VERSION}_amd64.deb && \
-    dpkg -i /root/manual/cuda-repo-ubuntu1604_${CUDA_MINOR_VERSION}_amd64.deb && \
-    echo 'deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64 /' > /etc/apt/sources.list.d/nvidia-ml.list && \
-    rm -rf /root/manual && \
-    apt-get update  && apt-get install --no-install-recommends -y cuda-toolkit-${CUDA_MAJOR_VERSION_HYP} \
-                                                                  libcudnn7 \
-                                                                  libcudnn7-dev && \
-    ls /usr/local/cuda-${CUDA_MAJOR_VERSION}/targets/x86_64-linux/lib/stubs/* | xargs -I{} ln -s {} /usr/lib/x86_64-linux-gnu/ && \
-    ln -s libcuda.so /usr/lib/x86_64-linux-gnu/libcuda.so.1 && \
-    ln -s libnvidia-ml.so /usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 && \
-    # Remove Stubs - to solve this issue: https://discuss.ropensci.org/t/using-the-gpu-backend-in-h2o-xgboost-in-a-rocker-based-docker-container/1561/2
-    rm -r -f  /usr/local/cuda/lib64/stubs
+# Nvidia drivers
+# Not necessary to access GPUs, but only for X11 forwarding
+RUN sudo apt-get purge nvidia-* && \
+    sudo apt-get -y install ubuntu-drivers-common && sudo ubuntu-drivers autoinstall
+
+# Nvidia CUDA
+RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | sudo apt-key add - && \
+    distribution=$(. /etc/os-release;echo $ID$VERSION_ID) && \
+    curl -s -L https://nvidia.github.io/nvidia-container-runtime/$distribution/nvidia-container-runtime.list | \
+    sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list && \
+    sudo apt-get update
+RUN sudo apt-get -y install linux-headers-"$(uname -r)" && \
+    sudo apt-get -y purge nvidia-cuda* && \
+    sudo apt-get -y install nvidia-cuda-dev nvidia-cuda-doc nvidia-cuda-gdb nvidia-cuda-toolkit nvidia-container-runtime
+
 
 ENV CUDA_HOME=/usr/local/cuda
 ENV CUDA_PATH=/usr/local/cuda
